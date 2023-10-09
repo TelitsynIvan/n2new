@@ -8,14 +8,18 @@ private:
     int front = 0;
     int back = 0;
     int capacity = 0;
-    bool set_size_flag=0;
+    bool set_size_flag= false;
 public:
     MyDeqeue() = default;
 
-    ~MyDeqeue() = default;
+    ~MyDeqeue(){
+        if(set_size_flag){
+            delete[] data;
+        }
+    };
 
     void set_size(int n){
-        if(set_size_flag==1){
+        if(set_size_flag){
             std::cout<<"error"<<'\n';
             return;
         }
@@ -28,50 +32,54 @@ public:
         for(int i=0; i<size; i++){
             data[i] = "\0";
         }
-        set_size_flag = 1;
+        set_size_flag = true;
+        return;
     }
     void pushf(std::string X){
-        if(set_size_flag==0){
+        if(!set_size_flag) {
             std::cout<<"error"<<'\n';
             return;
         }
-        if(capacity==size){
-            std::cout<<"overflow"<<'\n';
+        if (capacity>=size) {
+            std::cout << "overflow" << '\n';
             return;
         }
         front = (front-1+size)%size;
         data[front] = X;
         capacity++;
+        return;
     }
     void pushb(std::string X){
-        if(set_size_flag==0){
+        if(!set_size_flag) {
             std::cout<<"error"<<'\n';
             return;
         }
-        if(capacity==size){
-            std::cout<<"overflow"<<'\n';
+        if (capacity>=size) {
+            std::cout << "overflow" << '\n';
             return;
         }
         data[back] = X;
         capacity++;
         back = (back+1)%size;
+        return;
     }
     void popf(){
-        if(set_size_flag==0){
-            std::cout<<"error"<<'\n';
+        if (!set_size_flag) {
+            std::cout << "error" << '\n';
             return;
         }
-        if(capacity==0){
-            std::cout<<"underflow"<<'\n';
+        if (capacity == 0) {
+            std::cout << "underflow" << '\n';
             return;
         }
         std::cout<<data[front]<<'\n';
         data[front] = "\0";
         capacity--;
         front = (front+1)%size;
+        return;
     };
     void popb(){
-        if(set_size_flag==0){
+        if(!set_size_flag){
             std::cout<<"error"<<'\n';
             return;
         }
@@ -83,23 +91,26 @@ public:
         std::cout<<data[back]<<'\n';
         data[back] = "\0";
         capacity--;
+        return;
     };
     void print(){
-        if(set_size_flag==0){
-            std::cout<<"error"<<'\n';
+        if (!set_size_flag) {
+            std::cout << "error" << '\n';
             return;
         }
-        if(capacity==0){
-            std::cout<<"empty"<<'\n';
+        if (capacity == 0) {
+            std::cout << "empty" << '\n';
             return;
         }
         for(int i = front; i<size+front; i++){
             if(i==size+front-1){
-                std::cout<<data[i%size]<<'\n';
+                std::cout<<data[i%size];
                 continue;
             }
             std::cout<<data[i%size]<<' ';
         }
+        std::cout<<'\n';
+        return;
     };
 };
 
@@ -114,7 +125,7 @@ bool isNumeric(std::string object){
 
 bool checkSpaces(std::string object){
     for(int i=0; i<object.length(); i++){
-        if(isspace(object[i])==1){
+        if(isspace(object[i])){
             return false;
         }
     }
@@ -172,7 +183,7 @@ int main() {
             std::cout<<"error"<<'\n';
             continue;
         }
-        if(enter=="\n"){
+        if(enter.empty()){
             continue;
         }
         else{
